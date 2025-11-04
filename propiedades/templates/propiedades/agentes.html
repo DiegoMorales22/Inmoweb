@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Agentes - InmoWeb{% endblock %}
+
+    {%block navbar%}
+        <div class="logo">
+            <img src="{% static 'img/logo_inmoweb.png' %}" alt="InmoWeb Logo">
+            <h1>InmoWeb</h1>
+        </div>
+        <div>
+            <h1>Agentes</h1>
+        </div>
+        <div class="menu">
+            <a  href="{% url 'propiedades' %}">Inicio</a>
+        </div>
+        <div class="acciones">
+            
+            
+            <button class="btn ingresar">Ingresar</button>
+        </div>
+    {% endblock %}
+{% block content %}
+<section class="agentes-seccion">
+    
+
+    {% if agentes %}
+        <div class="agentes-container">
+            {% for agente in agentes %}
+                <div class="agente-card">
+                    {% if agente.perfil %}
+                        <img src="{{ agente.perfil.url }}" alt="Foto de {{ agente.nombre }}">
+                    {% else %}
+                        <div class="sin-foto">Sin foto</div>
+                    {% endif %}
+
+                    <h2>{{ agente.nombre }}</h2>
+                    <p><strong>Teléfono:</strong> {{ agente.telefono }}</p>
+                    <p><strong>Email:</strong> {{ agente.email }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="mensaje-vacio">No hay agentes registrados.</p>
+    {% endif %}
+</section>
+{% endblock %}
+ 
+
+    
+
+<!--Reto 3: Personaliza la lista de agentes
+
+En agentes.html, agrega un pequeño cuadro con el nombre, teléfono y correo de cada agente.
+
+Que quede algo así:
+
+Nombre: Carlos Pérez
+Teléfono: 123456
+Email: carlos@mail.com
+-->

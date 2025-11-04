@@ -1,0 +1,94 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+h1 {
+    font-weight: 700;
+    color: #333;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Todas las tarjetas iguales */
+.propiedad-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    background-color: #fff;
+    height: 100%; /* asegura que todas llenen su columna */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Efecto hover */
+.propiedad-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen fija */
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.propiedad-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 1.2rem;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.8rem;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Precio destacado */
+.precio {
+    color: #198754;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Etiquetas */
+strong {
+    color: #212529;
+}
+
+/* Encabezado */
+.titulo-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.titulo-icono span {
+    font-size: 1.8rem;
+}
+
+/* Pie de página */
+footer {
+    text-align: center;
+    margin-top: 60px;
+    color: #777;
+    font-size: 0.9rem;
+}

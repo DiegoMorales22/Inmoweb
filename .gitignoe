@@ -1,0 +1,23 @@
+# Archivos de Python
+__pycache__/
+*.pyc
+
+# Base de datos local
+db.sqlite3
+
+
+
+# Archivos de entorno
+.env
+
+# Archivos de usuario
+*.log
+
+# Archivos de medios (imágenes subidas por usuarios)
+media/
+
+# Archivos estáticos recolectados
+staticfiles/
+
+# Configuración del sistema (Windows)
+*.Zone.Identifier

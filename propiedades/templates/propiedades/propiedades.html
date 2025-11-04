@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Propiedades en Venta - InmoWeb{% endblock %}
+
+{% block content %}
+<h2 class="titulo">Propiedades disponibles</h2>
+
+{% if propiedades %}
+    <div class="grid">
+        {% for p in propiedades %}
+        <div class="card">
+            <img src="{{ p.foto_propiedad.url }}" alt="{{ p.titulo }}">
+            <div class="info">
+                <h3>{{ p.titulo }}</h3>
+                <p>{{ p.descripcion|truncatewords:15 }}</p>
+                <p><strong>Precio:</strong> ${{ p.precio|intcomma}}</p>
+                <p><strong>Ciudad:</strong> {{ p.ciudad }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No hay propiedades registradas todavía.</p>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+    {% load static %}
+    {% block title %}InmoWeb - Registra tu propiedad{% endblock %}</title>
+    {% block navbar %}
+        <div class="logo">
+                    <img src="{% static 'img/logo_inmoweb.png' %}" alt="InmoWeb Logo">
+                    <h1>InmoWeb</h1>
+                </div>
+
+                <nav class="menu">
+                    <a href="{% url 'propiedades' %}">Inicio</a>
+                </nav>
+
+                <div class="acciones">
+                    <button class="btn publicar">Publicar propiedad</button>
+                    <button class="btn ingresar">Ingresar</button>
+                    <button class="btn registro">Registrate</button>
+                </div>
+    {% endblock %}
+    {% block content %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn registro">Registra Propiedad</button>
+        </form><!-- Aquí se insertará el contenido de cada página -->
+    {% endblock %}

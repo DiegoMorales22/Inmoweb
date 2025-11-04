@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}InmoWeb - Tu inmobiliaria en Boyacá{% endblock %}</title>
+
+    <!-- Archivos estáticos -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+
+<body>
+    <!-- 🔸 Navbar superior -->
+    <header class="navbar">
+        {% block navbar %}
+        <div class="logo">
+            <img src="{% static 'img/logo_inmoweb.png' %}" alt="InmoWeb Logo">
+            <h1>InmoWeb</h1>
+        </div>
+
+        <nav class="menu">
+            <a href="{% url 'propiedades' %}">Propiedades</a>
+            <a href="{% url 'agentes' %}">Agentes</a>
+            <a href="{% url 'registroPropiedad'%}">Registro Propiedad</a>
+            
+        </nav>
+
+        <div class="acciones">
+            <button class="btn publicar">Publicar propiedad</button>
+            <button class="btn ingresar">Ingresar</button>
+            <button class="btn registro">Registrate</button>
+        </div>
+        {% endblock %}
+    </header>
+
+    <!-- 🔸 Contenido principal -->
+    <main class="contenido">
+        {% block content %}
+        <!-- Aquí se insertará el contenido de cada página -->
+        {% endblock %}
+    </main>
+
+    <!-- 🔸 Footer -->
+    <footer class="footer">
+        <div class="footer-contenido">
+            <div class="footer-logo">
+            <img src="{% static 'img/logo_inmoweb.png' %}" alt="InmoWeb Logo">
+            <h2>Inmo<span>Web</span></h2>
+            <p>Tu inmobiliaria en Boyacá</p>
+            </div>
+
+            <div class="footer-enlaces">
+            <h3>Enlaces</h3>
+            <ul>
+                <li><a href="{% url 'propiedades' %}">Propiedades</a></li>
+                <li><a href="{% url 'agentes' %}">Agentes</a></li>
+                <li><a href="#">Contáctanos</a></li>
+            </ul>
+            </div>
+
+            <div class="footer-redes">
+            <h3>Síguenos</h3>
+            <div class="redes-icons">
+                <a href="#" aria-label="Facebook">🌐</a>
+                <a href="#" aria-label="Instagram">📸</a>
+                <a href="#" aria-label="WhatsApp">💬</a>
+            </div>
+            </div>
+        </div>
+
+        <div class="footer-copy">
+            <p>© 2025 <strong>InmoWeb</strong> | Todos los derechos reservados</p>
+        </div>
+    </footer>   
+</body>
+</html>
