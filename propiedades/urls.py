@@ -7,5 +7,6 @@ urlpatterns = [
     path('registroPropiedad/',views.RegistroPropiedad, name='registroPropiedad'),
     path('registroExitoso/',views.registroExitoso, name='registroExitoso'), 
     path('editar/<int:id>/',views.editar_propiedad, name='editar_propiedad'),
-    path('eliminar/<int:id>/', views.eliminar_propiedad, name='eliminar_propiedad')
+    path('eliminar/<int:id>/', views.eliminar_propiedad, name='eliminar_propiedad'),
+    path('verpropiedad/<int:id>/',views.ver_propiedad, name="ver_propiedad")
 ]
