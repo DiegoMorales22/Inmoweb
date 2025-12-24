@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{%block title %} Filtar Propiedades{% endblock %}
+{% block content %}
+<h2>Propiedades</h2>
+<form method="GET">
+    <input type="text" value="{{ciudad}}" name="ciudad" placeholder="ciudad">
+    <input type="number" value="{{precio_min}}" name="precio_min" placeholder="precio minimo">
+    <button type="submit" >Buscar</button>
+</form>
+{% if ciudad %}
+    <p><strong>Ciudad ingresada: {{ ciudad }}</strong></p>
+{% endif %}
+
+{% if precio_min %}
+    <p><strong>Precio mínimo ingresado: {{ precio_min }}</strong></p>
+{% endif %}
+
+
+
+{% endblock %}

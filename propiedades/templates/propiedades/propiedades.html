@@ -6,6 +6,24 @@
 {% block content %}
 <h2 class="titulo">Propiedades disponibles</h2>
 
+<!--  FORMULARIO DE FILTRO -->
+ <form method="GET" class="filtros" style="margin-bottom: 20px;">
+    <input type="text" name="ciudad" value="{{ request.GET.ciudad }}" placeholder="Ciudad" class="form-control" style="margin-bottom:10px;">
+
+    <select name="tipo" class="form-select" style="margin-bottom:10px;">
+        <option value="">Todos los tipos</option>
+        <option value="Casa" {% if request.GET.tipo == "Casa" %}selected{% endif %}>Casa</option>
+        <option value="Apartamento" {% if request.GET.tipo == "Apartamento" %}selected{% endif %}>Apartamento</option>
+        <option value="Lote" {% if request.GET.tipo == "Lote" %}selected{% endif %}>Lote</option>
+    </select>
+
+    <input type="number" name="precio_min" value="{{ request.GET.precio_min }}" placeholder="Precio mínimo" class="form-control" style="margin-bottom:10px;">
+    <input type="number" name="precio_max" value="{{ request.GET.precio_max }}" placeholder="Precio máximo" class="form-control" style="margin-bottom:10px;">
+
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+<!-- 🔍 RESULTADOS -->
 {% if propiedades %}
     <div class="grid">
         {% for p in propiedades %}
@@ -14,7 +32,7 @@
             <div class="info">
                 <h3>{{ p.titulo }}</h3>
                 <p>{{ p.descripcion|truncatewords:15 }}</p>
-                <p><strong>Precio:</strong> ${{ p.precio|intcomma}}</p>
+                <p><strong>Precio:</strong> ${{ p.precio|intcomma }}</p>
                 <p><strong>Ciudad:</strong> {{ p.ciudad }}</p>
                 <a href="{% url 'editar_propiedad' p.id %}" class="btn btn-warning">✏️ Editar</a>
                 <a href="{% url 'eliminar_propiedad' p.id %}" class="btn btn-danger">❌ Eliminar</a>
@@ -26,4 +44,5 @@
     <p>No hay propiedades registradas todavía.</p>
 {% endif %}
 {% endblock %}
+
 

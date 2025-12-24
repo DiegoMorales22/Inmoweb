@@ -13,3 +13,4 @@ class RegistrarPropiedad(forms.ModelForm):
         "titulo": forms.TextInput(attrs={"placeholder": "Ej: Casa campestre en Tunja","class": "form-control"}),
         "precio": forms.NumberInput(attrs={"min": 0, "class": "form-control"})#uso Bootstrap para estilisar
         }
+
