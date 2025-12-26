@@ -9,30 +9,30 @@ from .forms import RegistrarPropiedad
 # Create your views here.
 
 def lista_propiedades(request):
-    errores = []
+    errores = {}
     propiedades = Propiedad.objects.all()
 
-    ciudad = request.GET.get('ciudad')
-    tipo = request.GET.get('tipo')
-    precio_min = request.GET.get('precio_min')
-    precio_max = request.GET.get('precio_max')
-    
+    ciudad = request.GET.get('ciudad', '')
+    tipo = request.GET.get('tipo', '')
+    precio_min = request.GET.get('precio_min', '')
+    precio_max = request.GET.get('precio_max', '')
+
     # VALIDACIONES
     if ciudad and not ciudad.isalpha():
-        errores.append("❌ No se aceptan números en la ciudad")
+        errores['ciudad'] = "❌No se aceptan números en la ciudad"
 
     if precio_min and not precio_min.isdigit():
-        errores.append("❌ El precio mínimo debe ser numérico")
+        errores['precio_min'] = "❌El precio mínimo debe ser numérico"
 
     if precio_max and not precio_max.isdigit():
-        errores.append("❌ El precio máximo debe ser numérico")
+        errores['precio_max'] = "❌El precio máximo debe ser numérico"
 
     if (
         precio_min and precio_max and
         precio_min.isdigit() and precio_max.isdigit() and
         int(precio_min) > int(precio_max)
     ):
-        errores.append("❌ El precio mínimo supera al máximo")
+        errores['precio'] = "El precio mínimo no puede ser mayor al máximo"
 
     # FILTROS
     if not errores:
@@ -44,7 +44,7 @@ def lista_propiedades(request):
             propiedades = propiedades.filter(precio__gte=int(precio_min))
         if precio_max:
             propiedades = propiedades.filter(precio__lte=int(precio_max))
-    
+
     context = {
         'ciudad': ciudad,
         'tipo': tipo,

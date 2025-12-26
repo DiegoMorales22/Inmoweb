@@ -345,3 +345,16 @@ body {
     margin-top: 1rem;
   }
 }
+.error-text {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+input.is-invalid,
+select.is-invalid {
+    border: 2px solid #dc3545;
+    outline: none;
+}
+
