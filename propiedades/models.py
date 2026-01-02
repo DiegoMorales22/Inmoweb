@@ -1,12 +1,7 @@
 from django.db import models
 
 # Create your models here.
-TIPO_CHOICES = [
-    ('casa', 'Casa'),
-    ('apartamento', 'Apartamento'), # respuestas validas
-    ('lote', 'Lote'),
-    ('oficina', 'Oficina'),
-]
+
 class Agente(models.Model):
     nombre =models.CharField(max_length=200, null=True, blank=True)
     telefono = models.CharField(max_length=50, default=0)
@@ -16,6 +11,12 @@ class Agente(models.Model):
         return f'{self.nombre}'
     
 class Propiedad(models.Model):
+    TIPO_CHOICES = [
+    ('casa', 'Casa'),
+    ('apartamento', 'Apartamento'), # respuestas validas
+    ('lote', 'Lote'),
+    ('oficina', 'Oficina'),
+]
     titulo = models.CharField(max_length=200)
     ciudad = models.CharField(max_length=100, null=True, blank=True)
     direccion = models.CharField(max_length=250)

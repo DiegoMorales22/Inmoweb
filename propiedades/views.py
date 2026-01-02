@@ -3,58 +3,48 @@ from django.shortcuts import get_object_or_404
 
 
 from .models import Propiedad, Agente
-from django.http import HttpResponse
-from .forms import RegistrarPropiedad
+from .forms import RegistrarPropiedad, FiltroPropiedadesForm
 
 # Create your views here.
 
 def lista_propiedades(request):
-    errores = {}
+    # 1️ Query base (todas las propiedades)
     propiedades = Propiedad.objects.all()
 
-    ciudad = request.GET.get('ciudad', '')
-    tipo = request.GET.get('tipo', '')
-    precio_min = request.GET.get('precio_min', '')
-    precio_max = request.GET.get('precio_max', '')
+    # 2️ Creo el formulario con datos GET
+    form = FiltroPropiedadesForm(request.GET or None)# or None evita que Django valide un formulario que nadie ha enviado.
 
-    # VALIDACIONES
-    if ciudad and not ciudad.isalpha():
-        errores['ciudad'] = "❌No se aceptan números en la ciudad"
+    # 3️ Valido el formulario
+    if form.is_valid():
+        datos = form.cleaned_data
 
-    if precio_min and not precio_min.isdigit():
-        errores['precio_min'] = "❌El precio mínimo debe ser numérico"
+        ciudad = datos.get("ciudad")
+        tipo = datos.get("tipo")
+        precio_min = datos.get("precio_min")
+        precio_max = datos.get("precio_max")
 
-    if precio_max and not precio_max.isdigit():
-        errores['precio_max'] = "❌El precio máximo debe ser numérico"
+        # 4️ Aplico filtros SOLO si el usuario los envió
 
-    if (
-        precio_min and precio_max and
-        precio_min.isdigit() and precio_max.isdigit() and
-        int(precio_min) > int(precio_max)
-    ):
-        errores['precio'] = "El precio mínimo no puede ser mayor al máximo"
-
-    # FILTROS
-    if not errores:
         if ciudad:
             propiedades = propiedades.filter(ciudad__icontains=ciudad)
+
         if tipo:
             propiedades = propiedades.filter(tipo=tipo)
-        if precio_min:
-            propiedades = propiedades.filter(precio__gte=int(precio_min))
-        if precio_max:
-            propiedades = propiedades.filter(precio__lte=int(precio_max))
 
+        if precio_min is not None:
+            propiedades = propiedades.filter(precio__gte=precio_min)
+
+        if precio_max is not None:
+            propiedades = propiedades.filter(precio__lte=precio_max)
+
+    # 5️ Envío al template
     context = {
-        'ciudad': ciudad,
-        'tipo': tipo,
-        'precio_min': precio_min,
-        'precio_max': precio_max,
-        'propiedades': propiedades,
-        'errores': errores
+        "form": form,
+        "propiedades": propiedades
     }
 
-    return render(request, 'propiedades/propiedades.html', context)
+    return render(request, "propiedades/propiedades.html", context)
+
 
 
 def lista_Agentes(request):
