@@ -13,7 +13,7 @@ class RegistrarPropiedad(forms.ModelForm):
         "precio": forms.NumberInput(attrs={"min": 0, "class": "form-control"})#uso Bootstrap para estilisar
         }
 
-class FiltroPropiedadesForm(forms.Form): #“La clase FiltroPropiedadesForm hereda de forms.Form”.
+class FiltroPropiedadesForm(forms.Form): #“La clase FiltroPropiedadesForm hereda de forms.Form”. solo valida datos
     ciudad = forms.CharField(
         required=False,
         max_length=50
@@ -56,6 +56,18 @@ class FiltroPropiedadesForm(forms.Form): #“La clase FiltroPropiedadesForm here
 
         return datos
 
+class FormDeContacto(forms.Form):
+    nombre=forms.CharField(
+        max_length=50)
+    email = forms.EmailField(label="Correo electrónico") #Django valida automaticamente que sea tipo email
+    mensaje= forms.CharField(widget=forms.Textarea,
+        label="Mensaje")#Textarea → campo largo (mensajes)
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get("nombre")#obtengo el valor limpio del nombre
+        if nombre and not nombre.replace(" ", "").isalpha():# Verifico que el nombre solo tenga letras, permitiendo espacios entre palabras
+            raise forms.ValidationError(
+            "El nombre solo puede contener letras y espacios"
+        )
 
         
 

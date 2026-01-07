@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 
 
 from .models import Propiedad, Agente
-from .forms import RegistrarPropiedad, FiltroPropiedadesForm
+from .forms import RegistrarPropiedad, FiltroPropiedadesForm, FormDeContacto
 
 # Create your views here.
 
@@ -16,7 +16,7 @@ def lista_propiedades(request):
 
     # 3️ Valido el formulario
     if form.is_valid():
-        datos = form.cleaned_data
+        datos = form.cleaned_data #cleaned_data  diccionario con los datos del form
 
         ciudad = datos.get("ciudad")
         tipo = datos.get("tipo")
@@ -68,17 +68,39 @@ def registroExitoso(request):
 def editar_propiedad(request,id):
     propiedad=get_object_or_404(Propiedad, id=id) #traeme la propiedad que tenga ese id y si no existe muestrame un error 404
     if request.method=='POST':
-          form = RegistrarPropiedad(request.POST,request.FILES,instance=propiedad) 
+          form = RegistrarPropiedad(request.POST,request.FILES,instance=propiedad) #muestro el form con sus datos que envio
           if form.is_valid():
                form.save()
                return redirect('lista_propiedades')
     else:
-         form=RegistrarPropiedad(instance=propiedad)
+         form=RegistrarPropiedad(instance=propiedad)#muestro el form con los datos actuales
     return render(request,'propiedades/editar_propiedad.html', {'form': form, 'propiedad': propiedad})
 
 def eliminar_propiedad(request,id):
      propiedad = get_object_or_404(Propiedad, id=id)
      propiedad.delete()
      return redirect('lista_propiedades')
-
-     
+def detalle_propiedad(request,id):
+    propiedad= get_object_or_404(Propiedad,id=id) #aqui le digo que me busque la propiedad con ese id y si no existe devuelva un error 404
+    if request.method=="POST":
+        form=FormDeContacto(request.POST)# muestro el formulario con los datos que envio
+        if form.is_valid():
+            datos = form.cleaned_data
+            nombre = datos["nombre"]
+            email = datos["email"]
+            mensaje=datos["mensaje"]
+            context={
+                "nombre":nombre,
+                "email":email,
+                "mensaje":mensaje,
+                "propiedad":propiedad
+            }
+            return render(request,'propiedades/registroexitoso.html', context)
+    else:
+        form = FormDeContacto()
+    return render(request,"propiedades/detalle_propiedad.html", {
+        "propiedad": propiedad,
+        "form": form
+    })
+        
+         
