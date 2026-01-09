@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ propiedad.titulo }}</h1>
+ <div class="grid">
+    <div class="card">
+        <img src="{{ propiedad.foto_propiedad.url }}" alt="{{ propiedad.titulo }}">
+        <div class="info">
+            <p><strong>Ciudad:</strong> {{ propiedad.ciudad }}</p>
+            <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
+            <p><strong>Precio:</strong> ${{ propiedad.precio }}</p>
+            <p><strong>Tipo:</strong> {{ propiedad.get_tipo_display }}</p>{# Django, dame el texto legible del campo tipo según los choices del modelo #}
+            <p><strong>Descripción:</strong></p>
+            <p>{{ propiedad.descripcion }}</p>
+        </div>
+    </div>
+</div>
+<hr>
+
+<h2>Contactar al agente</h2>
+
+{% if form.non_field_errors %}
+  <div class="errores">
+    {{ form.non_field_errors }}{#uso errores generales Dependen de la relación entre campos Dependen de la relación entre campos#}
+  </div>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div>
+        <label>Nombre</label><br>
+        {{ form.nombre }}
+        {{ form.nombre.errors }}{#uso errores de campo#}
+    </div>
+
+    <div>
+        <label>Email</label><br>
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+
+    <div>
+        <label>Mensaje</label><br>
+        {{ form.mensaje }}
+        {{ form.mensaje.errors }}
+    </div>
+
+    <button type="submit">Enviar mensaje</button>
+</form>
+
+{% endblock %}

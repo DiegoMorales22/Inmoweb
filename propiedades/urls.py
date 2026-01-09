@@ -8,4 +8,5 @@ urlpatterns = [
     path('registroExitoso/',views.registroExitoso, name='registroExitoso'), 
     path('editar/<int:id>/',views.editar_propiedad, name='editar_propiedad'),
     path('eliminar/<int:id>/', views.eliminar_propiedad, name='eliminar_propiedad'),
+    path('detalle/<int:id>/',views.detalle_propiedad, name='detalle_propiedad'),
 ]
