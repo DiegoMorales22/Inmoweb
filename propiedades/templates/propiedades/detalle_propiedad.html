@@ -18,15 +18,17 @@
 
 <h2>Contactar al agente</h2>
 
-{% if form.non_field_errors %}
-  <div class="errores">
-    {{ form.non_field_errors }}{#uso errores generales Dependen de la relación entre campos Dependen de la relación entre campos#}
-  </div>
-{% endif %}
+<h3>Ingresa tus datos para que un agente se contacte contigo</h3>
 
-<form method="POST">
-    {% csrf_token %}
-
+<form method="POST">{# “Cuando el usuario envíe este formulario, manda los datos como una acción, no como una  consulta.”#}
+    
+    {% csrf_token %} {#uso proteccion OBLIGATORIA#}
+    
+    {% if form.non_field_errors %}
+    <div class="errores">
+        {{ form.non_field_errors }}{#uso errores generales Dependen de la relación entre campos Dependen de la relación entre campos#}
+    </div>
+    {% endif %}
     <div>
         <label>Nombre</label><br>
         {{ form.nombre }}

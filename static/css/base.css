@@ -133,8 +133,12 @@ body {
   margin: 12px;                     /* Espacio entre tarjetas */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
+.card a {
+  text-decoration: none;   /* elimina la línea azul */
+  color: inherit;          /* usa el color del botón, no azul */
+}
 .card:hover {
+  text-decoration: none;
   transform: translateY(-5px);      /* Efecto sutil al pasar el mouse */
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
@@ -153,9 +157,21 @@ body {
 .card p {
   font-size: 0.95rem;
   color: #555;
-  line-height: 1.4;                /* Espaciado entre líneas */
+  line-height: 1.5;
   margin-bottom: 8px;
+
+  display: -webkit-box;             /* soporte actual para clamp */
+  -webkit-line-clamp: 3;            /* máximo 3 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
+.card .info a {
+  display: inline-block;
+  margin-top: 6px;
+  margin-right: 6px;
+}
+
+
 .card strong {
   display: block;
   color: #1e88e5;                  /* Azul profesional */
