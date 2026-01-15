@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.shortcuts import get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 from .models import Propiedad, Agente
@@ -65,6 +66,7 @@ def RegistroPropiedad(request):
 def registroExitoso(request):
     return render(request,'propiedades/registroexitoso.html')
 
+@staff_member_required
 def editar_propiedad(request,id):
     propiedad=get_object_or_404(Propiedad, id=id) #traeme la propiedad que tenga ese id y si no existe muestrame un error 404
     if request.method=='POST':
@@ -76,10 +78,12 @@ def editar_propiedad(request,id):
          form=RegistrarPropiedad(instance=propiedad)#muestro el form con los datos actuales
     return render(request,'propiedades/editar_propiedad.html', {'form': form, 'propiedad': propiedad})
 
+@staff_member_required #“Antes de ejecutar esta función,verifica si el usuario es administrador.Si no lo es, no lo dejes entrar.”
 def eliminar_propiedad(request,id):
      propiedad = get_object_or_404(Propiedad, id=id)
      propiedad.delete()
      return redirect('lista_propiedades')
+
 def detalle_propiedad(request,id):
     propiedad= get_object_or_404(Propiedad,id=id) #aqui le digo que me busque la propiedad con ese id y si no existe devuelva un error 404
     if request.method=="POST":

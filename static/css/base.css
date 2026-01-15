@@ -75,12 +75,77 @@ body {
    🔸 BOTONES
 ======================================================= */
 .btn {
-    padding: 8px 15px;
-    border: none;
+    display: inline-block; 
+    /* Permite que el botón se comporte como elemento en línea,
+       pero acepte ancho, alto y padding */
+
+    padding: 8px 16px; 
     border-radius: 8px;
-    cursor: pointer;
+    font-size: 0.9rem;
     font-weight: 600;
-    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer; 
+    /* Cambia el cursor a mano al pasar el mouse */
+    transition: background-color 0.25s ease, 
+                color 0.25s ease, 
+                transform 0.15s ease, 
+                box-shadow 0.15s ease;
+    /* Animaciones suaves para hover:
+       - color de fondo
+       - color de texto
+       - movimiento vertical
+       - sombra */
+
+    border: none; 
+    
+}
+.btn-contacto {
+    display: inline-block;        /* Comportamiento correcto del botón */
+    padding: 10px 16px;           /* Tamaño cómodo para click */
+    background-color: #ff6a00;    /* Color CTA fuerte */
+    color: #fff;                  /* Contraste correcto */
+    border-radius: 10px;          /* Estética moderna */
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+/* Hover elegante */
+.btn-contacto:hover {
+    background-color: #e55f00;    /* Oscurece ligeramente */
+    transform: translateY(-2px);  /* Efecto premium */
+}
+.btn-warning {
+    background-color: #f6c343; 
+    /* Amarillo pastel, menos agresivo */
+
+    color: #3a2d00; 
+    /* Texto oscuro para buena lectura */
+}
+
+.btn-warning:hover {
+    background-color: #eab308; 
+    /* Amarillo un poco más fuerte en hover */
+
+    transform: translateY(-1px); 
+    /* Mismo efecto de elevación para coherencia */
+
+}
+.btn-danger {
+    background-color: #e5535f; 
+    /* Rojo suavizado para advertencia sin agresividad */
+
+    color: #ffffff; 
+    /* Texto blanco para contraste */
+}
+
+.btn-danger:hover {
+    background-color: #c9424d; 
+    /* Rojo más oscuro en hover */
+
+    transform: translateY(-1px); 
+    /* Eleva ligeramente el botón */
 }
 
 /* Botón "Publicar propiedad" */

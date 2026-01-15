@@ -61,12 +61,25 @@
             <img src="{{ p.foto_propiedad.url }}" alt="{{ p.titulo }}">
             <div class="info">
                 <h3>{{ p.titulo }}</h3>
-                <p>{{ p.descripcion|truncatewords:15 }}</p>
+                <p>{{ p.descripcion|truncatewords:15 }}</p>{# truncatewords 15 palabras en la descripcion#}
                 <p><strong>Precio:</strong> ${{ p.precio|intcomma}}</p>
                 <p><strong>Ciudad:</strong> {{ p.ciudad }}</p>
-                <a href="{% url 'editar_propiedad' p.id %}" class="btn btn-warning">✏️ Editar</a>
-                <a href="{% url 'eliminar_propiedad' p.id %}" class="btn btn-danger">❌ Eliminar</a>
-                <a href="{% url 'detalle_propiedad' p.id %}" class="btn btn-danger"> 📲 Contacta Un Agente</a>
+                {% if user.is_authenticated and user.is_staff %}{#user.is_authenticated → ¿está logueado?
+                    user.is_staff         → ¿es admin del sistema?
+                    user.is_superuser     → ¿es super admin?#}
+                    <a href="{% url 'editar_propiedad' p.id %}" class="btn btn-warning">
+                        ✏️ Editar
+                    </a>
+
+                    <a href="{% url 'eliminar_propiedad' p.id %}" class="btn btn-danger">
+                        ❌ Eliminar
+                    </a>
+                {% endif %}
+
+                <a href="{% url 'detalle_propiedad' p.id %}" class="btn btn-contacto">
+                    🔍 Ver Detalles
+                </a>
+
             </div>
         </div>
         {% endfor %}
