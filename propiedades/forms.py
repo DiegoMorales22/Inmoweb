@@ -68,9 +68,3 @@ class FormDeContacto(forms.Form):
             raise forms.ValidationError(
             "El nombre solo puede contener letras y espacios"
         )
-
-        
-
-
-
-

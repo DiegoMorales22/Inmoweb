@@ -64,9 +64,8 @@
                 <p>{{ p.descripcion|truncatewords:15 }}</p>{# truncatewords 15 palabras en la descripcion#}
                 <p><strong>Precio:</strong> ${{ p.precio|intcomma}}</p>
                 <p><strong>Ciudad:</strong> {{ p.ciudad }}</p>
-                {% if user.is_authenticated and user.is_staff %}{#user.is_authenticated → ¿está logueado?
-                    user.is_staff         → ¿es admin del sistema?
-                    user.is_superuser     → ¿es super admin?#}
+                {% if user.is_authenticated and user.is_staff %}
+                
                     <a href="{% url 'editar_propiedad' p.id %}" class="btn btn-warning">
                         ✏️ Editar
                     </a>

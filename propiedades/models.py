@@ -37,30 +37,43 @@ class Propiedad(models.Model):
     def __str__(self):
         return f'{self.titulo}'
 
+class MensajeContacto(models.Model):
+    # Relación: muchos mensajes pueden pertenecer a una sola propiedad
+    propiedad = models.ForeignKey(
+        'Propiedad',                 # Modelo relacionado
+        on_delete=models.CASCADE,    # Si se borra la propiedad, se borran sus mensajes
+        related_name='mensajes'      # propiedad.mensajes.all()
+    )
 
-    """
-    🚀 Retos para ser PRO en filters
-🔹 Reto 1: Precio
+    # Datos del usuario que escribe
+    nombre = models.CharField(max_length=100)
+    email = models.EmailField()
+    mensaje = models.TextField()
 
-Trae todas las propiedades que cuesten menos de 200 millones.
-    """
+    # Fecha automática de creación
+    creado = models.DateTimeField(auto_now_add=True)
 
-#
+    def __str__(self):
+        # Cómo se verá el mensaje en el admin
+        return f"Mensaje de {self.nombre} - {self.propiedad}"
 
-"""
-reto # 1
->>> Propiedad.objects.filter(titulo__icontains="casa")
-<QuerySet [<Propiedad: Casa Blanca>, <Propiedad: Casa Campestre El Encanto>, <Propiedad: Casa Moderna San Laureano>]>
-reto # 2
->>> Propiedad.objects.filter(precio__lt=200000000)
-<QuerySet [<Propiedad: Apartamento La Esperanza>, <Propiedad: Cabaña Río Claro>]>
-reto # 3
->>> Propiedad.objects.filter(ciudad__icontains="Tunja", precio__gt=150000000)
-<QuerySet [<Propiedad: Casa Blanca>, <Propiedad: Casa Campestre El Encanto>]>
-Reto # 4 
->>> Propiedad.objects.filter(Q(ciudad__icontains="tunja")|Q(ciudad__icontains="Duitama"))
-<QuerySet [<Propiedad: Casa Blanca>, <Propiedad: Casa Campestre El Encanto>]>
-Reto # 5
->>> Propiedad.objects.values("titulo","precio").order_by("titulo","precio")
-<QuerySet [{'titulo': 'Apartamento Central en Duitama', 'precio': Decimal('250000000.00')}, {'titulo': 'Apartamento La Esperanza', 'precio': Decimal('150000000.00')}, {'titulo': 'Cabaña Río Claro', 'precio': Decimal('160000000.00')}, {'titulo': 'Casa Blanca', 'precio': Decimal('350000000.00')}, {'titulo': 'Casa Campestre El Encanto', 'precio': Decimal('320000000.00')}, {'titulo': 'Casa Moderna San Laureano', 'precio': Decimal('320000000.00')}, {'titulo': 'Finca Los Pinos', 'precio': Decimal('480000000.00')}, {'titulo': 'nombre', 'precio': Decimal('600000000.00')}]>
-"""
+class ImagenPropiedad(models.Model):
+    #cada img pertenece a una solo propiedad
+    propiedad = models.ForeignKey(
+        Propiedad,on_delete=models.CASCADE ,related_name='imagenes'
+    )
+    #Guarda la imagen dentro de la carpeta propiedades/ que está dentro de la carpeta MEDIA_ROOT”.
+    imagen= models.ImageField(upload_to="propiedades/")
+    
+    # Permite definir el orden de visualización de las imágenes
+    orden = models.PositiveIntegerField(default=0)
+    
+    #la fecha se crea automaticamente.Fecha y hora en que se sube la imagen
+    fecha= models.DateTimeField(auto_now_add=True)
+    
+    #activo=True → la imagen se muestra, activo=False → la imagen se oculta
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        estado = "Activa" if self.activo else "Oculta"
+        return f"Imagen de {self.propiedad.titulo} ({estado})"

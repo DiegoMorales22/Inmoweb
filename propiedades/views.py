@@ -1,11 +1,12 @@
-from django.shortcuts import render,redirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from .permissions import es_admin #importo mi archivo permissions.py 
 
 
-from .models import Propiedad, Agente
+from .models import Propiedad, Agente, MensajeContacto
 from .forms import RegistrarPropiedad, FiltroPropiedadesForm, FormDeContacto
-
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 
 def lista_propiedades(request):
@@ -78,11 +79,18 @@ def editar_propiedad(request,id):
          form=RegistrarPropiedad(instance=propiedad)#muestro el form con los datos actuales
     return render(request,'propiedades/editar_propiedad.html', {'form': form, 'propiedad': propiedad})
 
-@staff_member_required #“Antes de ejecutar esta función,verifica si el usuario es administrador.Si no lo es, no lo dejes entrar.”
-def eliminar_propiedad(request,id):
-     propiedad = get_object_or_404(Propiedad, id=id)
-     propiedad.delete()
-     return redirect('lista_propiedades')
+@login_required #verifica si ul usuario esta logueado
+@user_passes_test(es_admin) #el usuario cumple la condicion que expuse 
+def eliminar_propiedad(request, id):
+    propiedad = get_object_or_404(Propiedad, id=id)
+
+    if request.method == "POST":
+        propiedad.delete()
+        return redirect('lista_propiedades')
+
+    return render(request, 'propiedades/confirmar_eliminacion.html', {
+        'propiedad': propiedad
+    })
 
 def detalle_propiedad(request,id):
     propiedad= get_object_or_404(Propiedad,id=id) #aqui le digo que me busque la propiedad con ese id y si no existe devuelva un error 404
@@ -90,21 +98,18 @@ def detalle_propiedad(request,id):
         form=FormDeContacto(request.POST)# muestro el formulario con los datos que envio
         if form.is_valid():
             datos = form.cleaned_data
-            nombre = datos["nombre"]
-            email = datos["email"]
-            mensaje=datos["mensaje"]
-            context={
-                "nombre":nombre,
-                "email":email,
-                "mensaje":mensaje,
-                "propiedad":propiedad
-            }
-            return render(request,'propiedades/registroexitoso.html', context)
+            # Creamos el mensaje en la base de datos
+            MensajeContacto.objects.create(
+                nombre=datos["nombre"],
+                email=datos["email"],
+                mensaje=datos["mensaje"],
+                propiedad=propiedad  # relación directa
+            )
+
+            return render(request,'propiedades/registroexitoso.html',{"propiedad": propiedad})
     else:
         form = FormDeContacto()
     return render(request,"propiedades/detalle_propiedad.html", {
         "propiedad": propiedad,
         "form": form
-    })
-        
-         
+    })          
