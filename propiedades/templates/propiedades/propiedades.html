@@ -64,17 +64,6 @@
                 <p>{{ p.descripcion|truncatewords:15 }}</p>{# truncatewords 15 palabras en la descripcion#}
                 <p><strong>Precio:</strong> ${{ p.precio|intcomma}}</p>
                 <p><strong>Ciudad:</strong> {{ p.ciudad }}</p>
-                {% if user.is_authenticated and user.is_staff %}
-                
-                    <a href="{% url 'editar_propiedad' p.id %}" class="btn btn-warning">
-                        ✏️ Editar
-                    </a>
-
-                    <a href="{% url 'eliminar_propiedad' p.id %}" class="btn btn-danger">
-                        ❌ Eliminar
-                    </a>
-                {% endif %}
-
                 <a href="{% url 'detalle_propiedad' p.id %}" class="btn btn-contacto">
                     🔍 Ver Detalles
                 </a>

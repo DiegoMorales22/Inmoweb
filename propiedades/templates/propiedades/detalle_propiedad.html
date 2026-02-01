@@ -1,38 +1,101 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <h1>{{ propiedad.titulo }}</h1>
- <div class="grid">
-    <div class="card">
-        <img src="{{ propiedad.foto_propiedad.url }}" alt="{{ propiedad.titulo }}">
-        <div class="info">
-            <p><strong>Ciudad:</strong> {{ propiedad.ciudad }}</p>
-            <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
-            <p><strong>Precio:</strong> ${{ propiedad.precio }}</p>
-            <p><strong>Tipo:</strong> {{ propiedad.get_tipo_display }}</p>{# Django, dame el texto legible del campo tipo según los choices del modelo #}
-            <p><strong>Descripción:</strong></p>
-            <p>{{ propiedad.descripcion }}</p>
+
+{# Guardamos el resultado de una consulta en una variable Temporal #}
+{% with propiedad.imagenes.all as imagenes %}
+
+    {# Si la propiedad tiene al menos una imagen adicional #}
+    {% if imagenes|length > 0 %}
+
+    <!--CONTENEDOR PRINCIPAL (2 COLUMNAS)-->
+    <div class="detalle-layout">
+
+        <!--COLUMNA IZQUIERDA: IMAGEN PRINCIPAL-->
+        <div class="col-principal">
+
+            {# Usamos la PRIMERA imagen activa como imagen principal #}
+            {% for imagen in imagenes %}
+                {% if imagen.activo %}
+                    <img 
+                        src="{{ imagen.imagen.url }}" 
+                        alt="{{ propiedad.titulo }}"
+                        class="img-principal"
+                    >
+                    {% break %}
+                {% endif %}
+            {% endfor %}
+
         </div>
+
+        <!-- ===== COLUMNA DERECHA: GALERÍA ===== -->
+        <div class="col-galeria">
+            <h3>Galería</h3>
+
+            <div class="galeria">
+                {# Mostramos todas las imágenes EXCEPTO la primera (que ya es principal) #}
+                {% for imagen in imagenes|slice:"1:" %}
+                    {% if imagen.activo %}
+                        <img 
+                            src="{{ imagen.imagen.url }}" 
+                            alt="Imagen de {{ propiedad.titulo }}"
+                            class="img-galeria"
+                        >
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
+
+    {% else %}
+
+    <!--SI NO HAY IMÁGENES ADICIONALES-->
+    <div class="col-principal">
+        <img 
+            src="{{ propiedad.foto_propiedad.url }}" 
+            alt="{{ propiedad.titulo }}"
+            class="img-principal"
+        >
+    </div>
+
+    {% endif %}
+
+{% endwith %}
+
+<!-- ===== INFORMACIÓN DE LA PROPIEDAD ===== -->
+<div class="card info">
+    <p><strong>Ciudad:</strong> {{ propiedad.ciudad }}</p>
+    <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
+    <p><strong>Precio:</strong> ${{ propiedad.precio }}</p>
+    <p><strong>Tipo:</strong> {{ propiedad.get_tipo_display }}</p>
+    <p><strong>Descripción:</strong></p>
+    <p>{{ propiedad.descripcion }}</p>
+
+    {% if user.is_staff %}
+        <a href="{% url 'editar_propiedad' propiedad.id %}" class="btn btn-warning">✏️ Editar</a>
+        <a href="{% url 'eliminar_propiedad' propiedad.id %}" class="btn btn-danger">❌ Eliminar</a>
+    {% endif %}
 </div>
-<hr>
 
+<!-- ===== FORMULARIO DE CONTACTO ===== -->
 <h2>Contactar al agente</h2>
-
 <h3>Ingresa tus datos para que un agente se contacte contigo</h3>
 
-<form method="POST">{# “Cuando el usuario envíe este formulario, manda los datos como una acción, no como una  consulta.”#}
-    
-    {% csrf_token %} {#uso proteccion OBLIGATORIA#}
-    
+<form method="POST">
+    {% csrf_token %}
+
     {% if form.non_field_errors %}
-    <div class="errores">
-        {{ form.non_field_errors }}{#uso errores generales Dependen de la relación entre campos Dependen de la relación entre campos#}
-    </div>
+        <div class="errores">
+            {{ form.non_field_errors }}
+        </div>
     {% endif %}
+
     <div>
         <label>Nombre</label><br>
         {{ form.nombre }}
-        {{ form.nombre.errors }}{#uso errores de campo#}
+        {{ form.nombre.errors }}
     </div>
 
     <div>

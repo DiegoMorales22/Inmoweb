@@ -84,6 +84,36 @@ strong {
 .titulo-icono span {
     font-size: 1.8rem;
 }
+.detalle-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* izquierda grande, derecha pequeña */
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 30px;
+}
+
+/* Imagen principal */
+.col-principal img {
+    width: 100%;
+    height: 420px;          /* 🔥 controla el tamaño */
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+/* Galería */
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.img-galeria {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
 
 /* Pie de página */
 footer {

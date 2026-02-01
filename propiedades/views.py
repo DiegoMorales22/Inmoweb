@@ -67,14 +67,15 @@ def RegistroPropiedad(request):
 def registroExitoso(request):
     return render(request,'propiedades/registroexitoso.html')
 
-@staff_member_required
+@login_required #verifica si ul usuario esta logueado
+@user_passes_test(es_admin) #el usuario cumple la condicion que expuse
 def editar_propiedad(request,id):
     propiedad=get_object_or_404(Propiedad, id=id) #traeme la propiedad que tenga ese id y si no existe muestrame un error 404
     if request.method=='POST':
           form = RegistrarPropiedad(request.POST,request.FILES,instance=propiedad) #muestro el form con sus datos que envio
           if form.is_valid():
                form.save()
-               return redirect('lista_propiedades')
+               return redirect('propiedades')
     else:
          form=RegistrarPropiedad(instance=propiedad)#muestro el form con los datos actuales
     return render(request,'propiedades/editar_propiedad.html', {'form': form, 'propiedad': propiedad})
@@ -86,7 +87,7 @@ def eliminar_propiedad(request, id):
 
     if request.method == "POST":
         propiedad.delete()
-        return redirect('lista_propiedades')
+        return redirect('propiedades')
 
     return render(request, 'propiedades/confirmar_eliminacion.html', {
         'propiedad': propiedad
